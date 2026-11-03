@@ -16,8 +16,7 @@
         <input type="submit" name="action" value="creer" />
         <input type="submit" name="action" value="supp" />
         <input type="submit" name="action" value="jour" />
-        <input type="submit" name="action" value="afficher" />
-
+        <input type="submit" name="action" value="afficher"/>
       </form>
     </main>
   </body>
@@ -26,25 +25,27 @@
 
 <?php
 function connection(){
-return mysqli_connect("localhost","root","","project");}
+return mysqli_connect("localhost","root","","project");
+}
+
 function create_user(){
   $username=$_POST["username"];
+  if($username!=""){
   $conn=connection();
-  if($conn){
+  if(!($conn==False)){
      $query="insert into utilisateur
-              value($username)";
+              value('$username')";
      $Res=mysqli_query($conn,$query); 
      if($Res!=false)
-      echo "user created successefuly";        
-  }
+      echo "user created successefuly";  
+    else 
+    echo"connection invalid<br/>";      
+  }}
   else 
-    echo"connection invalid<br/>";
+    return -1;
+  
 
 }
-if(!(connection()==false)){
-
-if($_SERVER['REQUEST_METHOD']=='POST'){
-create_user();
 
 function creerTache(){
 ?> 
@@ -59,11 +60,16 @@ $tache_creer=$_POST["tache_creer"];
 $query="insert into taches(tache,username)
 values($tache_creer,$username)";
 $result=mysqli_query(connection(),$query);
+
 if(!($result==False))
   echo"Tache creer !";
 else
   echo "erreur";
 }
+if(!(connection()==false)){
+
+if($_SERVER['REQUEST_METHOD'] ==='POST'){
+if(create_user()!=-1){
 
 
 if(isset($_POST["action"])){
@@ -77,8 +83,10 @@ switch($action){
 
 }
 }
+else 
+  echo "user not created";
 }
-
+}
 else 
   echo "connection invalid";
 ?>
