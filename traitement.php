@@ -72,10 +72,7 @@ else
 }
 
 if(!(connection()==false)){
-WHILE($f==true){
-create_user();
-$f=false;
-}
+if(create_user()!=-1){
 if($_SERVER['REQUEST_METHOD'] ==='POST'){
 
 
