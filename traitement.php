@@ -1,3 +1,6 @@
+<?php
+$username=$_POST["username"];
+?>
 <html lang="fr">
   <head>
     <meta charset="utf_8" />
@@ -13,6 +16,7 @@
     </header>
     <main>
       <form action="traitement.php" method="post">
+        <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
         <input type="submit" name="action" value="creer" />
         <input type="submit" name="action" value="supp" />
         <input type="submit" name="action" value="jour" />
@@ -66,10 +70,14 @@ if(!($result==False))
 else
   echo "erreur";
 }
-if(!(connection()==false)){
 
+if(!(connection()==false)){
+WHILE($f==true){
+create_user();
+$f=false;
+}
 if($_SERVER['REQUEST_METHOD'] ==='POST'){
-if(create_user()!=-1){
+
 
 
 if(isset($_POST["action"])){
