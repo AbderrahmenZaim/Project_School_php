@@ -1,36 +1,51 @@
 <?php
 session_start();
 $creertache = false ;
+$supptache=false;
+$update_tache=false;
 $username=$_SESSION["username"];
 $conn=mysqli_connect("localhost","root","","project");
-$_SESSION["connection"]=$conn;
 
-function creerTache(){
+if(isset($_POST["ajouter_tache"])){
 
-if(isset($_POST["ajouter"]) and trim($_POST["tache_creer"]," ")!=""){
-$connection=$_SESSION["conncection"];
+if(isset($_POST["ajouter_tache"])){
+if(trim($_POST["tache_creer"]," ")==""){
+    echo"Tache est vide , invalide !";
+    $creertache=false;
+}
+else{
 $username=$_SESSION["username"];
 $tache_creer=$_POST["tache_creer"];
 $query="insert into taches(tache,username)
 values('$tache_creer','$username')";
-$result=mysqli_query($connection,$query);
+$result=mysqli_query($conn,$query);
 
-if(!($result==False))
-echo"Tache creer !";
-else
+if($result==False)
 echo "erreur de creation de tache";
+
 }
+}}
+
+elseif(isset($_POST["supp_tache"])){
+
 }
 
-if(isset($_POST["action"])){
+elseif(isset($_POST["action"])){
 $action=$_POST["action"];
 switch($action){
     case "creer":
-        creerTache();
-        echo"i am here ";
+        $creertache=true;
         break;
+    case "supprimer":
+        $supptache=true;
+        break;
+    case "mise_a_jour": 
+        $update_tache=true;
+        break; 
+    case "afficher":    
+
     default :
-    echo"pas cree !";
+    echo"Action invalide !";
 }
 }
 ?>
@@ -51,18 +66,36 @@ switch($action){
     <main>
 <form action="taches.php" method="post">
         <input type="submit" name="action" value="creer" />
-        <input type="submit" name="action" value="supp" />
-        <input type="submit" name="action" value="jour" />
+        <input type="submit" name="action" value="supprimer" />
+        <input type="submit" name="action" value="mise_a_jour" />
         <input type="submit" name="action" value="afficher"/>
 </form>
-<?php ?>
+<?php if($creertache){?>
 <form action="taches.php" method="post">
 Tache a ajouter :
         <br/><input type="text" name="tache_creer"/>
-        <br/><input type="submit" name="ajouter" value="ajouter"/>
-        <br/><input type="reset" name="reset" value="annuler"/>    
+        <br/><input type="submit" name="ajouter_tache" value="ajouter"/>
+        <br/><input type="reset" value="annuler"/>    
 </form>
+<?php }?>
+<?php if($supptache){
+     $query_supp="select tache from taches
+     where username='$username'";
+     $res=mysqli_query($conn,$query_supp);
+     $indice = 1;
+     while($row=mysqli_fetch_array($res)){
+     echo $indice.".".$row["tache"]."<br/>";
+     $indice++;
+     }
 
+    ?>
+<form action="taches.php" method="post">
+Ecrire le nombre de Tache a supprimer :
+        <br/><input type="text" name="tache_supp"/>
+        <br/><input type="submit" name="supp_tache" value="supprimer"/>
+        <br/><input type="reset" value="annuler"/>    
+</form>
+<?php }?>
     </main>
   </body>
 </html>
