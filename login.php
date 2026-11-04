@@ -15,7 +15,7 @@ else
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css" />
-    <title>Gestionnaire des taches</title>
+    <title>Gestionnaire des taravail </title>
   </head>
   <body>
     <header>
