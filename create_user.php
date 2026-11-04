@@ -1,6 +1,5 @@
 <?php
 session_start();
-echo $_SESSION["username"];
 if(empty($_SESSION["username"])){
     echo"username required";
     header("Location: login.php");   
@@ -9,8 +8,7 @@ if(empty($_SESSION["username"])){
 
 $username=trim($_SESSION["username"]);
 if($username!=""){
-$conn=mysqli_connect("localhost","root","","project");
-if(!($conn==False)){
+require_once("DB_connection.php");
 $query="insert into utilisateur
 value('$username')";
 $Res=mysqli_query($conn,$query); 
@@ -23,7 +21,10 @@ else {
 echo"user not created<br/>";    
 header("Location: login.php");
 exit;  }  
-}}
-
-
+}
+else{
+echo"user not created due to invalid username<br/>";    
+header("Location: login.php");
+exit; 
+}
 ?>

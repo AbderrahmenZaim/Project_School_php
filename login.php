@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 if(isset($_POST["login"])){
@@ -15,7 +14,7 @@ else
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css" />
-    <title>Gestionnaire des taravail </title>
+    <title>Gestionnaire des taches</title>
   </head>
   <body>
     <header>
