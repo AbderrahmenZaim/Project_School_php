@@ -137,7 +137,7 @@ Choisir les taches a supprimer :<br/><br/>
 <form action="taches.php" method="post">
 <?= htmlspecialchars($value["tache"])?> 
 <input type="hidden" name="id" value=<?= $value["id"]?>/>
-<button type="submit" name="supprimer_tache" value="Supprimer" onclick="confirm('Supprimer ce tache?')"/>supprimer</button><br/><br/>
+<button type="submit" name="supprimer_tache" value="Supprimer"/>supprimer</button><br/><br/>
 </form> 
 <?php }?>
 <br/><input type="submit" name="quitter_tache" value="quitter"/>    
