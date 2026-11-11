@@ -40,7 +40,6 @@ elseif(isset($_POST["creer_tache"])){
 
 elseif(isset($_POST["supprimer_tache"])){
     $tache_id=(int)$_POST["id"];
-    echo"$tache_id<br/>";
     $query_supp="delete from taches
     where username='$username' and id=$tache_id";
     $res_supp=mysqli_query($conn,$query_supp);
@@ -127,7 +126,7 @@ Tache a ajouter :
 
 <?php
 if($supptache){?>
-
+Choisir les taches a supprimer :<br/><br/>
 <?php
     $query="select tache,id from taches
     where username='$username'";
@@ -136,14 +135,13 @@ if($supptache){?>
     foreach($row as $value){ 
   ?>
 <form action="taches.php" method="post">
-Choisir les taches a supprimer :<br/><br/>
 <?= htmlspecialchars($value["tache"])?> 
 <input type="hidden" name="id" value=<?= $value["id"]?>/>
 <button type="submit" name="supprimer_tache" value="Supprimer" onclick="confirm('Supprimer ce tache?')"/>supprimer</button><br/><br/>
-
+</form> 
 <?php }?>
 <br/><input type="submit" name="quitter_tache" value="quitter"/>    
-</form> 
+
 <?php }?>
 
 <?php if($modifier_taches){?>
