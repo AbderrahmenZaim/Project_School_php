@@ -19,11 +19,8 @@ $modifier_taches=false;
 $username=$_SESSION["username"];
 require_once("DB_connection.php");
 
-if(isset($_POST["quitter_tache"])){
-header("Location: taches.php");
-exit();}
 
-elseif(isset($_POST["creer_tache"])){
+if(isset($_POST["creer_tache"])){
 
     if(trim($_POST["tache_creer"])==""){
           echo'<p class="erreur">Tache est vide , invalide !</p><br/>';
@@ -120,8 +117,8 @@ elseif(isset($_POST["action"])){
 Tache a ajouter :
         <br/><textarea maxlength="70" name="tache_creer"></textarea>
         <br/><input type="submit" name="creer_tache" value="ajouter"/>
-        <br/><input type="submit" name="quitter_tache" value="quitter"/>    
 </form>
+  <p><a href="taches.php"><button>Quitter</button></a></p>
 <?php }?>
 
 <?php
@@ -140,7 +137,9 @@ Choisir les taches a supprimer :<br/><br/>
 <button type="submit" name="supprimer_tache" value="Supprimer"/>supprimer</button><br/><br/>
 </form> 
 <?php }?>
-<br/><input type="submit" name="quitter_tache" value="quitter"/>    
+<?php if (count($row) == 0): ?><p>Aucune tache.</p><?php endif; ?>
+    <p><a href="taches.php"><button>Quitter</button></a></p>
+<br/>   
 
 <?php }?>
 
@@ -159,7 +158,7 @@ Choisir les taches a modifier :<br/><br/>
 <input type="hidden" name="id_mod" value=<?= $value["id"]?>/>
 <button type="submit" name="modifier_tache" value="modifier"/>Modifier</button><br/><br/>
 </form> <?php }?>
-<br/><input type="submit" name="quitter_tache" value="quitter"/>     
+<br/>  <p><a href="taches.php"><button>Quitter</button></a></p>
 
 <?php }?>    
   </main>
