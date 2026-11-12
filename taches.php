@@ -16,6 +16,7 @@ session_start();
 $creertache = false ;
 $supptache=false;
 $modifier_taches=false;
+$afficher_taches = false;
 $username=$_SESSION["username"];
 require_once("DB_connection.php");
 
@@ -43,6 +44,11 @@ elseif(isset($_POST["supprimer_tache"])){
     $supptache=true;
     if($res_supp==False)
       echo "<p class='erreur'>erreur de suppression de tache</p>";
+}
+elseif (isset($_POST["afficher_taches"])) {
+    $query_affich = "SELECT tache FROM taches WHERE username='$username' ";
+    $ress_affiche = mysqli_query($conn, $query_affich);
+    $afficher_taches = true;
 }
 
 elseif(isset($_POST["modifier_tache"])){
@@ -95,7 +101,9 @@ elseif(isset($_POST["action"])){
           $modifier_taches=true;
           break; 
 
-        case "afficher":    
+        case "afficher": 
+          $afficher_taches = true;
+          break;
 
         default :
           echo"Action invalide !";
@@ -142,6 +150,23 @@ Choisir les taches a supprimer :<br/><br/>
 <br/>   
 
 <?php }?>
+
+<?php if ($afficher_taches) { ?>
+<?php
+    $query_affich = "SELECT tache FROM taches WHERE username='$username' ";
+    $res = mysqli_query($conn, $query_affich);
+    $row = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    echo " <table border = 1 >";
+    echo " <tr> <th>Votre taches : </th> </tr>";
+    foreach ($row as $val) {
+
+    echo " <tr> <td> ".$val["tache"]. "</td> </tr> ";
+    }
+    echo "</table>";
+?>
+<br> <p><a href="taches.php"><button>Quitter</button></a></p>
+
+<?php } ?>
 
 <?php if($modifier_taches){?>
 
