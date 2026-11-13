@@ -12,7 +12,7 @@
             Ce page vous permet de creer,mettre a jour et supprimer vos taches
         </h3>
     </header>
-
+<main>
 <?php
 session_start();
 $creertache = false;
@@ -22,9 +22,7 @@ $modifier_taches = false;
 $afficher_buttons=True;
 $username = $_SESSION["username"];
 require_once("DB_connection.php");
-$query_check="SELECT tache from taches where username='$username' ";
-$query_resultat=mysqli_query($conn,$query_check);
-$affected_rows=mysqli_num_rows($query_resultat);
+
 if (isset($_POST["creer_tache"])) {
 
     if (trim($_POST["tache_creer"]) == "") {
@@ -67,11 +65,10 @@ if (isset($_POST["creer_tache"])) {
         <form action="taches.php" method="post">
             Modifier :
             <br /><textarea maxlength="70" name="tache_modifier"><?= $tache_pre ?></textarea>
-            <br /><input type="submit" name="enregistrer_mod" value="enregistrer" />
+            <br /><input type="submit" name="enregistrer_mod" value="enregistrer" /><br/>
             <br /><input type="submit" name="quitter_tache" value="annuler" />
         </form>
         <?php
-        
     } 
     elseif (isset($_POST["enregistrer_mod"])) {
 
@@ -98,7 +95,6 @@ if (isset($_POST["creer_tache"])) {
                 break;
 
             case "supprimer":
-             
                 $supptache = true;
                 break;
 
@@ -109,17 +105,19 @@ if (isset($_POST["creer_tache"])) {
             case "modifier":
                 $modifier_taches = true;
                 break;
-
-
-
             default:
                 echo "Action invalide !";
         }
     }
-$afficher_buttons= !isset($_POST["action"]) ;
+
+$query_check = "SELECT tache FROM taches WHERE username='$username'";
+$query_resultat = mysqli_query($conn, $query_check);
+$affected_rows = mysqli_num_rows($query_resultat);
+
+$afficher_buttons = !($creertache || $supptache || $afficher_taches || $modifier_taches || isset($_POST["modifier_tache"]));
     ?>
 
-    <main>
+    
     <?php if($afficher_buttons){ ?>
         <form action="taches.php" method="post">
             <input type="submit" name="action" value="creer" />
@@ -140,8 +138,6 @@ $afficher_buttons= !isset($_POST["action"]) ;
         <?php } ?>
 
         <?php
-
-
         if ($supptache) {
           if ($affected_rows>0){
           ?>
