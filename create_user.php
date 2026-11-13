@@ -1,7 +1,7 @@
 <?php
 session_start();
-if(empty($_SESSION["username"])){
-    echo"username required";
+$_SESSION["invalid"]=False;
+if(empty($_SESSION["username"]) || !preg_match("/^[[:alpha:]][[:alnum:]]{2,70}/",$_SESSION["username"])){
     header("Location: login.php");   
     exit; 
 }
@@ -9,7 +9,7 @@ if(empty($_SESSION["username"])){
 $username=trim($_SESSION["username"]);
 if($username!=""){
 require_once("DB_connection.php");
-$query="insert into utilisateur
+$query="insert ignore into utilisateur
 value('$username')";
 $Res=mysqli_query($conn,$query); 
 if($Res!=false){
@@ -21,10 +21,5 @@ else {
 echo"user not created<br/>";    
 header("Location: login.php");
 exit;  }  
-}
-else{
-echo"user not created due to invalid username<br/>";    
-header("Location: login.php");
-exit; 
 }
 ?>

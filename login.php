@@ -6,25 +6,26 @@ $_SESSION["username"]=$_POST["username"];
 header("Location: create_user.php");
 exit();}
 else 
-    $error = "Username is required!";
+    $error = "Username est invalide!";
 }
 ?>
 
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="TEST.css" />
     <title>Gestionnaire des taches</title>
   </head>
   <body>
     <header>
-      <h1><b>Gestioannaire des taches !</b></h1>
+      <h1><b>Gestioannaire des taches</b></h1>
     </header>
     <main>
       <form action="login.php" method="post">
-        Enter your username : <br />
-        <input type="text" name="username" maxlength="20" required />
-        <input type="submit" name="login"  value="login" />
+        Entrer votre nom d'utilisateur : <br />
+        <input type="text" name="username" maxlength="20" required /><br/><br/>
+        <input type="submit" name="login"  value="Entrer" />
+        <p class="warning">Le nom d’utilisateur doit comporter au moins 2 caractères et ne contenir que des caractères alphanumériques.</p>
       </form>
     </main>
   </body>
