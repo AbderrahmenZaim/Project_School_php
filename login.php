@@ -18,7 +18,7 @@ else
   </head>
   <body>
     <header>
-      <h1><b>Gestioannaire des taches</b></h1>
+      <h1><b>Gestionnaire des taches</b></h1>
     </header>
     <main>
       <form action="login.php" method="post">
