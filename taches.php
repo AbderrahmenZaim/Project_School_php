@@ -7,7 +7,7 @@
 
 <body>
     <header>
-        <h1>Gestionnaire de taches !</h1>
+        <h1>Gestionnaire de taches</h1>
         <h3>
             Ce page vous permet de creer,mettre a jour et supprimer vos taches
         </h3>
@@ -22,15 +22,17 @@ $modifier_taches = false;
 $afficher_buttons=True;
 $username = $_SESSION["username"];
 require_once("DB_connection.php");
-
+$query_check="SELECT tache from taches where username='$username' ";
+$query_resultat=mysqli_query($conn,$query_check);
+$affected_rows=mysqli_num_rows($query_resultat);
 if (isset($_POST["creer_tache"])) {
 
     if (trim($_POST["tache_creer"]) == "") {
             echo '<p class="erreur">Tache est vide , invalide !</p><br/>';
         } else {
-            $tache_creer = htmlspecialchars($_POST["tache_creer"]);
+            $tache_creer = $_POST["tache_creer"];
             $query = "insert into taches(tache,username)
-          values('$tache_creer','$username')";
+            values('$tache_creer','$username')";
             $result = mysqli_query($conn, $query);
             if ($result == False)
                 echo "<p class='erreur'>erreur de creation de tache</p>";
@@ -74,7 +76,7 @@ if (isset($_POST["creer_tache"])) {
     elseif (isset($_POST["enregistrer_mod"])) {
 
         $id = $_SESSION["id_mod"];
-        $nouv_tache = htmlspecialchars($_POST["tache_modifier"]);
+        $nouv_tache = $_POST["tache_modifier"];
         if (trim($nouv_tache) == "") {
             echo '<p class="erreur">Tache est vide , invalide !</p><br/>';
         } else {
@@ -96,6 +98,7 @@ if (isset($_POST["creer_tache"])) {
                 break;
 
             case "supprimer":
+             
                 $supptache = true;
                 break;
 
@@ -123,8 +126,9 @@ $afficher_buttons= !isset($_POST["action"]) ;
             <input type="submit" name="action" value="supprimer" />
             <input type="submit" name="action" value="modifier" />
             <input type="submit" name="action" value="afficher" />
-            <br> <p id="log"> Retour a la page de login : <a href="login.php"><button id="btn">login</button></a></p>
-        </form><?php }?>
+        </form>
+<br> <p id="log"> Retour a la page de login : <a href="login.php"><button id="btn">login</button></a></p>
+        <?php }?>
 
         <?php if ($creertache) { ?>
             <form action="taches.php" method="post">
@@ -138,7 +142,9 @@ $afficher_buttons= !isset($_POST["action"]) ;
         <?php
 
 
-        if ($supptache) { ?>
+        if ($supptache) {
+          if ($affected_rows>0){
+          ?>
             Choisir les taches a supprimer :<br /><br />
             <?php
             $query = "select tache,id from taches
@@ -153,28 +159,33 @@ $afficher_buttons= !isset($_POST["action"]) ;
                     <button type="submit" name="supprimer_tache" value="Supprimer" />supprimer</button><br /><br />
                 </form>
             <?php } ?>
-            <?php if (count($row) == 0): ?>
-                <p>Aucune tache.</p><?php endif; ?>
             <p><a href="taches.php"><button>Quitter</button></a></p>
-            <br />
+            <?php } else {  ?>
+                <p>Aucune tache a supprimer.</p>            
+                <p><a href="taches.php"><button>Quitter</button></a></p>
+            <?php } ?>
+            <?php }?>
 
-<?php } ?>
-<?php  if  ($afficher_taches) { 
+<?php  if  ($afficher_taches) { if ($affected_rows>0){ 
         $query_affich = "SELECT tache FROM taches WHERE username='$username' ";
         $res = mysqli_query($conn, $query_affich);
         $row = mysqli_fetch_all($res, MYSQLI_ASSOC);
 echo " <table border =1 >";
 echo " <tr> <th>Votre taches : </th> </tr>";
 foreach ($row as $val) {
-    echo  " <tr> <td> ".$val["tache"]. "</td>  </tr> ";
+    echo  " <tr> <td> ".htmlspecialchars($val["tache"]). "</td>  </tr> ";
 }
 echo "</table>";
 ?>
 <br>  <p><a href="taches.php"><button>Quitter</button></a></p>
 
-<?php } ?>
+<?php } else { ?>
+                <p>Aucune tache a afficher.</p>
+                <p><a href="taches.php"><button>Quitter</button></a></p>
+                <?php } ?>
+            <?php }?>
 
-<?php if ($modifier_taches) { ?>
+<?php if ($modifier_taches) { if($affected_rows>0){ ?>
     Choisir les taches a modifier :<br /><br />
 <?php
     $query = "select tache,id from taches
@@ -182,15 +193,19 @@ echo "</table>";
     $res = mysqli_query($conn, $query);
     $row = mysqli_fetch_all($res, MYSQLI_ASSOC);
     foreach ($row as $value) {
-    $_SESSION["tache_pre"] = htmlspecialchars($value["tache"]); ?>
+    $_SESSION["tache_pre"] = $value["tache"]; ?>
       <form action="taches.php" method="post">
       <?= htmlspecialchars($value["tache"]) ?>
       <input type="hidden" name="id_mod" value=<?= $value["id"] ?> />
       <button type="submit" name="modifier_tache" value="modifier" />Modifier</button><br /><br />
-      </form> <?php } ?> <br />
+      </form> <?php } ?>
       <p><a href="taches.php"><button>Quitter</button></a></p>
 
-        <?php } ?>  
+        <?php }else { ?>  
+            <p>Aucune tache a modifier.</p> 
+            <p><a href="taches.php"><button>Quitter</button></a></p>
+            <?php } ?>
+            <?php }?>
 </main>
 </body>
 </html>
