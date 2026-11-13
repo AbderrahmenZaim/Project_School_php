@@ -1,7 +1,7 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="TEST.css">
+    <link rel="stylesheet" href="style.css">
     <title>Gestionnaire de taches</title>
 </head>
 

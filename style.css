@@ -14,7 +14,12 @@ header {
   text-align: center;
   padding: 25px 10px;
 }
-
+.warning {
+  color: red;
+  text-align: left;
+  background-color: white;
+  font-size: x-small;
+}
 header h1 {
   margin: 0 0 10px 0;
 }
@@ -90,9 +95,18 @@ button {
 
 input[type="submit"]:hover,
 button:hover {
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
+input[name="creer_tache"] {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: green;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
 /* Boutons du menu : creer / supprimer / modifier / afficher */
 input[name="action"] {
   margin: 0 5px 5px 0;
